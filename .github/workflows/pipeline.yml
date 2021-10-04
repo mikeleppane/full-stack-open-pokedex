@@ -53,9 +53,13 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: custom
+          fields: author,took
           custom_payload: |
             {
               text: `A new version deployed to Heroku successfully: https://dashboard.heroku.com/apps/full-stack-cicd-pokedex-app by ${process.env.AS_AUTHOR} in ${process.env.AS_TOOK}`
+              "attachments": [{
+                "color": "good"
+              }]
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
