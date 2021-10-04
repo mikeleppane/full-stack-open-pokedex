@@ -38,7 +38,7 @@ jobs:
 
         run: echo "$COMMIT_MESSAGES"
       - name: Bump version and push tag
-        if: contains(${{ env.COMMIT_MESSAGES }}, '#skip')
+        if: contains(${{ env.COMMIT_MESSAGES }}, "#skip")
         run: echo "Hello"
         #uses: anothrNick/github-tag-action@1.33.0
         #env:
