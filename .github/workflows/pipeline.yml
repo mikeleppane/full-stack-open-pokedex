@@ -35,11 +35,11 @@ jobs:
       - name: commit messages
         env:
           MESSAGES: ${{ env.COMMIT_MESSAGES }}
-          CONTAINS: ${{ contains(env.COMMIT_MESSAGES, '#skip') }}
+          CONTAINS: ${{ !contains(env.COMMIT_MESSAGES, '#skip') }}
 
         run: echo "$CONTAINS, $MESSAGES"
       - name: Bump version and push tag
-        if: ${{ github.event_name == 'push' }} && ${{ !contains(env.COMMIT_MESSAGES, '#skip') }}
+        if: ${{ github.event_name == 'push' && !contains(env.COMMIT_MESSAGES, '#skip') }}
         run: echo "Hello"
         #uses: anothrNick/github-tag-action@1.33.0
         #env:
