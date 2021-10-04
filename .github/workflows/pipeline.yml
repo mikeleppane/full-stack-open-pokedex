@@ -24,34 +24,27 @@ jobs:
         run: npm run eslint
       - name: build
         run: npm run build
-      #- name: test
-      #  run: npm run test
-      #- name: e2e tests
-      #  uses: cypress-io/github-action@v2
-      #  with:
-      #    command: npm run test:e2e
-      #    start: npm run start-prod
-      #    wait-on: http://localhost:5000
-      - name: commit messages
-        env:
-          MESSAGES: ${{ env.COMMIT_MESSAGES }}
-          CONTAINS: ${{ !contains(env.COMMIT_MESSAGES, '#skip') }}
-
-        run: echo "$CONTAINS, $MESSAGES"
+      - name: test
+        run: npm run test
+      - name: e2e tests
+        uses: cypress-io/github-action@v2
+        with:
+          command: npm run test:e2e
+          start: npm run start-prod
+          wait-on: http://localhost:5000
       - name: Bump version and push tag
         if: ${{ github.event_name == 'push' && !contains(env.COMMIT_MESSAGES, '#skip') }}
-        run: echo "Hello"
-        #uses: anothrNick/github-tag-action@1.33.0
-        #env:
-        #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        #  DEFAULT_BUMP: patch
-      #- name: Deploy to Heroku
-      #  if: github.event_name == 'push' && !contains(env.COMMIT_MESSAGES, '#skip')
-      #  uses: akhileshns/heroku-deploy@v3.12.12
-      #  with:
-      #    heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-      #    heroku_app_name: "full-stack-cicd-pokedex-app"
-      #    heroku_email: "mleppan23@gmail.com"
-      #    healthcheck: "https://full-stack-cicd-pokedex-app.herokuapp.com/health"
-      #    checkstring: "ok"
-      #   rollbackonhealthcheckfailed: true
+        uses: anothrNick/github-tag-action@1.33.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+      - name: Deploy to Heroku
+        if: ${{ github.event_name == 'push' && !contains(env.COMMIT_MESSAGES, '#skip') }}
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "full-stack-cicd-pokedex-app"
+          heroku_email: "mleppan23@gmail.com"
+          healthcheck: "https://full-stack-cicd-pokedex-app.herokuapp.com/health"
+          checkstring: "ok"
+          rollbackonhealthcheckfailed: true
