@@ -33,7 +33,8 @@ jobs:
       - name: commit messages
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
-        run: echo "env.COMMIT_MESSAGES"
+          COMMIT_MESSAGES_2: ${{ toJson(github.event.commits.message) }}
+        run: echo "$COMMIT_MESSAGES;$COMMIT_MESSAGES_2"
       - name: Bump version and push tag
         if: ${{ github.event_name == 'push' && !contains(join(env.COMMIT_MESSAGES), '#skip') }}
         uses: anothrNick/github-tag-action@1.33.0
