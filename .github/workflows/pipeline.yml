@@ -36,11 +36,12 @@ jobs:
 
         run: echo "$COMMIT_MESSAGES"
       - name: Bump version and push tag
-        if: contains(env.COMMIT_MESSAGES, '#skip') != true
-        uses: anothrNick/github-tag-action@1.33.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP: patch
+        if: contains("${{env.COMMIT_MESSAGES}}", '#skip') != true
+        run: echo "Hello"
+        #uses: anothrNick/github-tag-action@1.33.0
+        #env:
+        #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #  DEFAULT_BUMP: patch
       #- name: Deploy to Heroku
       #  if: github.event_name == 'push' && !contains(env.COMMIT_MESSAGES, '#skip')
       #  uses: akhileshns/heroku-deploy@v3.12.12
