@@ -33,10 +33,11 @@ jobs:
       #    start: npm run start-prod
       #    wait-on: http://localhost:5000
       - name: commit messages
-        #  env:
-        #    COMMIT_MESSAGES: ${{ join(github.event.commits.*.message) }}
+        env:
+          MESSAGES: ${{ env.COMMIT_MESSAGES }}
+          CONTAINS: contains(${{ env.COMMIT_MESSAGES }}, "#skip")
 
-        run: echo "$COMMIT_MESSAGES"
+        run: echo "$CONTAINS, $MESSAGES"
       - name: Bump version and push tag
         if: contains(${{ env.COMMIT_MESSAGES }}, "#skip")
         run: echo "Hello"
