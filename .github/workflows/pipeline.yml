@@ -48,13 +48,27 @@ jobs:
           healthcheck: "https://full-stack-cicd-pokedex-app.herokuapp.com/health"
           checkstring: "ok"
           rollbackonhealthcheckfailed: true
-      - uses: 8398a7/action-slack@v3
+      - name: Send notification to Slack if success
         if: ${{ success() }}
+        uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
           fields: repo,message,commit,author,took
-          mention: 'here'
+          custom_payload: |
+            {
+              attachments: [{
+                text: `A new version deployed to Heroku successfully: https://dashboard.heroku.com/apps/full-stack-cicd-pokedex-app by ${process.env.AS_AUTHOR} in ${process.env.AS_TOOK}`,
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Send notification to Slack if success
+        if: ${{ failure() }}
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,took
           text: |
-            `A new version deployed to Heroku successfully: https://dashboard.heroku.com/apps/full-stack-cicd-pokedex-app by ${process.env.AS_AUTHOR} in ${process.env.AS_TOOK}`
+            `${process.env.AS_WORKFLOW}\n${process.env.AS_JOB} (${process.env.AS_COMMIT}) of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}`
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
