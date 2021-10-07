@@ -14,6 +14,6 @@ Start by running `npm install` inside the project folder
 `npm run build` to make a production build
 `npm run start-prod` to run your production build
 
-## Solution for the exercise 11.21 - 11.22
+## Solution for the exercises 11.21 - 11.22
 
 [https://github.com/mikeleppane/full-stack-open-2021-cicd-bloglist-app](https://github.com/mikeleppane/full-stack-open-2021-cicd-bloglist-app)
